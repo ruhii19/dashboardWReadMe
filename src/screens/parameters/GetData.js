@@ -4,18 +4,18 @@ import {
   Text,
   View,
   SafeAreaView,
-  ActivityIndicator
+  ActivityIndicator,
+  FlatList,
+  Button
 } from 'react-native'
-import TempScreen from './TempScreen'
-// get data from this URL!
 
-const movieURL = 'https://irflabs.in/gedl/edllogin.php?userId=pqrs&pass=s1234'
+const movieURL = 'https://irflabs.in/gedl/edllogin.php?userId=abcd&pass=d1234'
 
-const GetData = () => {
+const GetData = ({ navigation }) => {
   // managing state with 'useState'
   const [isLoading, setLoading] = useState(true)
-
   const [data, setData] = useState([])
+  const [multiIdNotEmpty, setMultiIdNotEmpty] = useState(false)
 
   // similar to 'componentDidMount', gets called once
   useEffect(() => {
@@ -23,6 +23,7 @@ const GetData = () => {
       .then((response) => response.json()) // get response, convert to json
       .then((json) => {
         setData(json)
+        checkMultiIdNotEmpty(json)
       })
       .catch((error) => alert(error)) // display errors
       .finally(() => {
@@ -30,30 +31,42 @@ const GetData = () => {
       }) // change loading state
   }, [])
 
-  // Also get call asynchronous function
-  const batteryData = []
-  const temperatureData = []
-  const humidityData = []
-  const rainData = []
-  const soilMoistureData = []
-  const timeData = []
-
-  // Loop through the jsonData array and extract and store data in respective arrays
-  data.forEach((item) => {
-    batteryData.push(item.Batt)
-    temperatureData.push(item.Temp)
-    humidityData.push(item.Hum)
-    rainData.push(item.Rain)
-    soilMoistureData.push(item.SoilM)
-    timeData.push(item.TimeS)
-  })
+  const checkMultiIdNotEmpty = (json) => {
+    const multiId = json.map((item) => item.DevId)
+    if (multiId.length > 0) {
+      setMultiIdNotEmpty(true)
+    }
+  }
 
   return (
     <SafeAreaView style={styles.container}>
       {isLoading ? (
         <ActivityIndicator />
       ) : (
-        <TempScreen temperatureData={temperatureData} />
+        <View>
+          <Text>JSON Data:</Text>
+          <FlatList
+            data={data}
+            keyExtractor={(item, index) => index.toString()}
+            renderItem={({ item }) => (
+              <Text>{JSON.stringify(item, null, 2)}</Text>
+            )}
+          />
+
+          {multiIdNotEmpty && (
+            <View>
+              {data.map((item, index) => (
+                <Button
+                  key={index}
+                  title={`DevId: ${item.DevId}`}
+                  onPress={() =>
+                    navigation.navigate('MultiUser', { name: 'MultiUser' })
+                  }
+                />
+              ))}
+            </View>
+          )}
+        </View>
       )}
     </SafeAreaView>
   )
