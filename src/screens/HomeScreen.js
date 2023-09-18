@@ -9,17 +9,22 @@ import {
 
 const HomeScreen = ({ navigation, route }) => {
   const { email, password } = route.params
-  const movieURL = `https://irflabs.in/gedl/edllogin.php?userId=${email}&pass=${password}`
+  const URL = `https://irflabs.in/gedl/edllogin.php?userId=${email}&pass=${password}`
   const [isLoading, setLoading] = useState(true)
 
   const [data, setData] = useState([])
+  const [hasDevId, setHasDevId] = useState(false)
 
   // similar to 'componentDidMount', gets called once
   useEffect(() => {
-    fetch(movieURL)
+    fetch(URL)
       .then((response) => response.json()) // get response, convert to json
       .then((json) => {
         setData(json)
+        // Check if the response contains an array of devices with DevId
+        if (Array.isArray(json) && json.some((item) => item.DevId)) {
+          setHasDevId(true)
+        }
       })
       .catch((error) => alert(error)) // display errors
       .finally(() => {
@@ -34,40 +39,51 @@ const HomeScreen = ({ navigation, route }) => {
   const rainData = []
   const soilMoistureData = []
   const timeData = []
-
+  const devId = []
   // Loop through the jsonData array and extract and store data in respective arrays
-  data.forEach((item) => {
-    batteryData.push(item.Batt)
-    temperatureData.push(item.Temp)
-    humidityData.push(item.Hum)
-    rainData.push(item.Rain)
-    soilMoistureData.push(item.SoilM)
-    timeData.push(item.TimeS)
-  })
+  if (hasDevId) {
+    data.forEach((item) => devId.push(item.DevId))
+  } else {
+    data.forEach((item) => {
+      batteryData.push(item.Batt)
+      temperatureData.push(item.Temp)
+      humidityData.push(item.Hum)
+      rainData.push(item.Rain)
+      soilMoistureData.push(item.SoilM)
+      timeData.push(item.TimeS)
+    })
+  }
   console.log(temperatureData)
   console.log(humidityData)
+  console.log(devId)
 
   return (
     <SafeAreaView>
       {isLoading ? (
         <ActivityIndicator />
+      ) : hasDevId ? (
+        <View>
+          {data.map((item, index) => (
+            <Button
+              key={index}
+              title={`DevId: ${item.DevId}`}
+              onPress={() =>
+                navigation.navigate('MultiUser', {
+                  name: 'MultiUser',
+                  DevId: item.DevId
+                })
+              }
+            />
+          ))}
+        </View>
       ) : (
         <View>
-          <Button
-            title="Humidity"
-            onPress={() =>
-              navigation.navigate('Humidity', {
-                name: 'Humidity',
-                humidityData: humidityData
-              })
-            }
-          />
           <Button
             title="Temp"
             onPress={() =>
               navigation.navigate('Temp', {
                 name: 'Temp',
-                temperatureData: humidityData
+                temperatureData: temperatureData
               })
             }
           />
@@ -80,7 +96,15 @@ const HomeScreen = ({ navigation, route }) => {
               })
             }
           />
-
+          <Button
+            title="Humidity"
+            onPress={() =>
+              navigation.navigate('Humidity', {
+                name: 'Humidity',
+                humidityData: humidityData
+              })
+            }
+          />
           <Button
             title="Soil Moisture"
             onPress={() =>
