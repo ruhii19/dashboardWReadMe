@@ -28,7 +28,7 @@ const LoginScreen = ({ navigation }) => {
   }
   return (
     <View style={styles.container}>
-      <StatusBar backgroundColor={'#491659'} />
+      <StatusBar />
       <View
         style={{
           paddingVertical: 12,
@@ -67,25 +67,6 @@ const LoginScreen = ({ navigation }) => {
       >
         <Text style={styles.loginText}>Login</Text>
       </TouchableOpacity>
-
-      <View style={styles.SignUp}>
-        <View>
-          <Text>Don't have an account?</Text>
-        </View>
-        <View style={styles.login}>
-          <TouchableOpacity>
-            <Text
-              style={{
-                color: 'white',
-                alignSelf: 'center',
-                paddingHorizontal: 10
-              }}
-            >
-              Sign up
-            </Text>
-          </TouchableOpacity>
-        </View>
-      </View>
     </View>
   )
 }
@@ -94,12 +75,12 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
-    backgroundColor: '#d6b6e0',
+    backgroundColor: '#f0f1f7',
     width: '100%'
   },
   input: {
     padding: 10,
-    borderColor: '#491659',
+    borderColor: '#656669',
     borderWidth: 1,
     borderRadius: 25,
     marginBottom: 10,
@@ -107,7 +88,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center'
   },
   login: {
-    backgroundColor: '#491659',
+    backgroundColor: '#262629',
     borderRadius: 25,
     alignSelf: 'center',
     padding: 10,
@@ -125,13 +106,6 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     fontSize: 19,
     fontWeight: 'bold'
-  },
-  SignUp: {
-    marginTop: 15,
-    width: '90%',
-    alignSelf: 'center',
-    flexDirection: 'row',
-    justifyContent: 'space-between'
   }
 })
 
