@@ -1,11 +1,15 @@
 import React, { useState, useEffect } from 'react'
 import {
   View,
+  Text,
   StyleSheet,
+  TouchableOpacity,
+  ImageBackground,
   Button,
   ActivityIndicator,
   SafeAreaView
 } from 'react-native'
+import { Feather } from '@expo/vector-icons'
 
 const HomeScreen = ({ navigation, route }) => {
   const { email, password } = route.params
@@ -56,7 +60,7 @@ const HomeScreen = ({ navigation, route }) => {
   console.log(temperatureData)
   console.log(humidityData)
   console.log(devId)
-
+  const image = { uri: '' }
   return (
     <SafeAreaView>
       {isLoading ? (
@@ -65,6 +69,7 @@ const HomeScreen = ({ navigation, route }) => {
         <View>
           {data.map((item, index) => (
             <Button
+              style={styles.multiButton}
               key={index}
               title={`DevId: ${item.DevId}`}
               onPress={() =>
@@ -77,43 +82,79 @@ const HomeScreen = ({ navigation, route }) => {
           ))}
         </View>
       ) : (
-        <View>
-          <Button
-            title="Temp"
+        <View style={styles.container}>
+          <TouchableOpacity
+            style={[styles.button, styles.tempButton]}
             onPress={() =>
               navigation.navigate('Temp', {
                 name: 'Temp',
                 temperatureData: temperatureData
               })
             }
-          />
-          <Button
-            title="Rain"
+          >
+            <View style={styles.iconContainer}>
+              <Feather name={'thermometer'} size={24} color="white" />
+            </View>
+            <View style={styles.textContainer}>
+              <Text style={styles.title}>Temp</Text>
+              <Text style={styles.value}>{temperatureData[0]}</Text>
+            </View>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={[styles.button, styles.rainButton]}
             onPress={() =>
               navigation.navigate('Rain', {
                 name: 'Rain',
                 rainData: rainData
               })
             }
-          />
-          <Button
-            title="Humidity"
+          >
+            <View style={styles.iconContainer}>
+              <Feather name={'cloud-rain'} size={24} color="white" />
+            </View>
+            <View style={styles.textContainer}>
+              <Text style={styles.title}>Rain</Text>
+              <Text style={styles.value}>{rainData[0]}</Text>
+            </View>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={[styles.button, styles.humButton]}
             onPress={() =>
               navigation.navigate('Humidity', {
                 name: 'Humidity',
                 humidityData: humidityData
               })
             }
-          />
-          <Button
-            title="Soil Moisture"
+          >
+            <View style={styles.iconContainer}>
+              <Feather name={'droplet'} size={24} color="white" />
+            </View>
+            <View style={styles.textContainer}>
+              <Text style={styles.title}>Humidity</Text>
+              <Text style={styles.value}>{humidityData[0]}</Text>
+            </View>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={[styles.button, styles.soilMButton]}
             onPress={() =>
               navigation.navigate('Soil Moisture', {
                 name: 'Soil Moisture',
                 soilMoistureData: soilMoistureData
               })
             }
-          />
+          >
+            <View style={styles.iconContainer}>
+              <Feather name={'align-center'} size={24} color="white" />
+            </View>
+            <View style={styles.textContainer}>
+              <Text style={styles.title}>Soil</Text>
+              <Text style={styles.title}>Moisture</Text>
+              <Text style={styles.value}>{soilMoistureData[0]}</Text>
+            </View>
+          </TouchableOpacity>
         </View>
       )}
     </SafeAreaView>
@@ -123,16 +164,58 @@ const HomeScreen = ({ navigation, route }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'space-around'
+    flexDirection: 'row', // Horizontal arrangement
+    justifyContent: 'center', // Center items horizontally
+    alignItems: 'center', // Center items vertically
+    marginTop: 350,
+    backgroundColor: '#757b85'
   },
-  button1: {
-    backgroundColor: 'powderblue',
-    flexDirection: 'row'
+  imageLayout: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center'
   },
-  buttonStyle: {
-    height: 100,
-    width: 50,
-    backgroundColor: 'red'
+  button: {
+    height: 80,
+    width: 80,
+    borderRadius: 50,
+    marginHorizontal: 10, // Adjust spacing between buttons
+    justifyContent: 'center', // Center text vertically
+    alignItems: 'center', // Center text horizontally
+    shadowColor: 'black',
+    padding: 10
+  },
+  iconContainer: {
+    marginRight: 10,
+    alignItems: 'center'
+  },
+  textContainer: {
+    alignItems: 'center'
+  },
+  title: {
+    color: 'white',
+    fontSize: 12,
+    fontWeight: 'bold'
+  },
+  value: {
+    color: 'white',
+    fontSize: 14
+  },
+  tempButton: {
+    backgroundColor: '#f70707'
+  },
+  rainButton: {
+    backgroundColor: '#13b8eb'
+  },
+  humButton: {
+    backgroundColor: '#a6b1ed'
+  },
+  soilMButton: {
+    backgroundColor: '#2ce69b'
+  },
+  multiButton: {
+    flex: 1,
+    backgroundColor: '#69707a'
   }
 })
 export default HomeScreen
