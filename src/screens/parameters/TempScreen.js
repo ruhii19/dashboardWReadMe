@@ -1,15 +1,16 @@
 import React from 'react'
-import { View, StyleSheet } from 'react-native'
+import { View, StyleSheet, Image, Text } from 'react-native'
 import { LineChart } from 'react-native-chart-kit'
+import { Dimensions } from 'react-native'
 
-const TempScreen = ({ navigation, route }) => {
+const RainScreen = ({ navigation, route }) => {
   const { temperatureData } = route.params
   const data = {
-    labels: [],
+    labels: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
     datasets: [
       {
         data: temperatureData,
-        color: (opacity = 1) => `rgba(0, 0, 255, ${opacity})`, // Line color for the first dataset
+        color: (opacity = 1) => `rgba(	51, 204, 204, ${opacity})`, // Line color for the first dataset
         strokeWidth: 2 // Line width for the first dataset
       }
     ]
@@ -17,16 +18,27 @@ const TempScreen = ({ navigation, route }) => {
 
   return (
     <View style={styles.container}>
+      <Image
+        style={styles.icon}
+        source={require('../../../assets/temperature.gif')}
+      />
+      <Text style={styles.par}>Current</Text>
+      <Text style={styles.curr}>
+        {temperatureData[0]}
+        <Text style={styles.unit}>°C</Text>
+      </Text>
+
       <LineChart
         data={data}
-        width={300}
-        height={200}
-        yAxisLabel=""
+        width={Dimensions.get('window').width / 1.05}
+        height={Dimensions.get('window').height / 3}
+        yAxisSuffix=" °C"
+        yAxisInterval={1}
         chartConfig={{
           backgroundGradientFrom: 'white',
           backgroundGradientTo: 'white',
-          decimalPlaces: 2,
-          color: (opacity = 1) => `rgba(0, 0, 255, ${opacity})`,
+          decimalPlaces: 1,
+          color: (opacity = 1) => `rgba(	51, 204, 204, ${opacity})`,
           labelColor: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
           style: {
             borderRadius: 16
@@ -41,9 +53,38 @@ const TempScreen = ({ navigation, route }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
+    //backgroundColor: '#f0f1f7',
+    backgroundColor: 'white',
+    flexDirection: 'column',
+    justifyContent: 'flex-start'
+  },
+  icon: {
+    height: 640 / 3.5,
+    width: 640 / 3.5,
+    marginTop: 20,
+
+    marginBottom: Dimensions.get('window').height / 16
+    //padding: 50
+  },
+  par: {
+    fontSize: Dimensions.get('window').height / 23,
+    fontFamily: 'sans-serif-thin'
+  },
+  curr: {
+    fontSize: Dimensions.get('window').height / 16,
+    //fontFamily: 'sans-serif-thin',
+    fontFamily: 'sans-serif-light',
+    //fontWeight: '100',
+    marginBottom: Dimensions.get('window').height / 9
+  },
+  unit: {
+    fontSize: Dimensions.get('window').height / 23,
+    fontFamily: 'sans-serif-thin'
+  },
+  chart: {
+    flex: 1
   }
 })
 
-export default TempScreen
+export default RainScreen
