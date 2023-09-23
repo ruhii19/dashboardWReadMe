@@ -5,10 +5,10 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import HomeScreen from './src/screens/HomeScreen'
 import TempScreen from './src/screens/parameters/TempScreen'
 import RainScreen from './src/screens/parameters/RainScreen'
-import LoginScreen from './src/screens/LoginSignupScreen/LoginScreen'
+import LoginScreen from './src/screens/LoginSignupScreen.js/LoginScreen'
 import HumidityScreen from './src/screens/parameters/HumidityScreen'
 import SoilMoistureScreen from './src/screens/parameters/SoilMoistureScreen'
-import MultiUser from './src/screens/parameters/MultiUser'
+import MultiUser from './src/screens/MultiUser'
 
 const Stack = createNativeStackNavigator()
 
