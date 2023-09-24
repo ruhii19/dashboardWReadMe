@@ -48,10 +48,10 @@ const HomeScreen = ({ navigation, route }) => {
   const location = []
   // Loop through the jsonData array and extract and store data in respective arrays
   if (hasDevId) {
-    /* data.forEach((item) => {
+    data.forEach((item) => {
       devId.push(item.DevId)
       location.push(item.location)
-    }) */
+    })
   } else {
     data.forEach((item) => {
       batteryData.push(item.Batt)
