@@ -4,7 +4,7 @@ import { LineChart } from 'react-native-chart-kit'
 import { Dimensions } from 'react-native'
 
 const HumidityScreen = ({ navigation, route }) => {
-  const { humidityData } = route.params
+  const { humidityData, timeData } = route.params
   const reversedHumidity = humidityData.slice(0, 10).reverse() // Reversed copy of the data
 
   // Calculate the sum of all values in the reversedSoil array
@@ -19,13 +19,41 @@ const HumidityScreen = ({ navigation, route }) => {
   console.log('Hum data:', humidityData)
   console.log('Average:', average)
 
+  function extractTimeFromTimestamp(timestamp) {
+    const parts = timestamp.split(' ')
+    if (parts.length >= 4) {
+      const timeParts = parts[3].split(':')
+      if (timeParts.length >= 2) {
+        return `${timeParts[0]}:${timeParts[1]}`
+      }
+    }
+    return 'Invalid Timestamp'
+  }
+
+  function extractDateFromTimestamp(timestamp) {
+    const parts = timestamp.split(' ')
+    if (parts.length >= 3) {
+      return `${parts[0]} ${parts[1]}`
+    }
+    return 'Invalid Timestamp' // Handle the case where the timestamp format is not as expected
+  }
   const data = {
-    labels: [],
+    labels: [
+      [extractTimeFromTimestamp(timeData[9])],
+      '',
+      '',
+      '',
+      '',
+      '',
+      '',
+      '',
+      [extractTimeFromTimestamp(timeData[0])]
+    ],
     datasets: [
       {
         data: reversedHumidity,
-        color: (opacity = 1) => `rgba(0, 0, 255, ${opacity})`, // Line color for the first dataset
-        strokeWidth: 2 // Line width for the first dataset
+        color: (opacity = 1) => `rgba(0, 0, 255, ${opacity})`,
+        strokeWidth: 2
       }
     ]
   }
@@ -34,7 +62,7 @@ const HumidityScreen = ({ navigation, route }) => {
     <View style={styles.container}>
       <Image
         style={styles.icon}
-        source={require('../../../assets/watering-can.gif')}
+        source={require('../../../assets/humidity.gif')}
       />
       <View style={styles.textContainer}>
         <View style={styles.infoContainer}>
