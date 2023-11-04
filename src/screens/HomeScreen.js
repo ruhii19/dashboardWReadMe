@@ -113,7 +113,8 @@ const HomeScreen = ({ navigation, route }) => {
               onPress={() =>
                 navigation.navigate('Temp', {
                   name: 'Temp',
-                  temperatureData: temperatureData
+                  temperatureData: temperatureData,
+                  timeData: timeData
                 })
               }
             >
@@ -131,7 +132,8 @@ const HomeScreen = ({ navigation, route }) => {
               onPress={() =>
                 navigation.navigate('Rain', {
                   name: 'Rain',
-                  rainData: rainData
+                  rainData: rainData,
+                  timeData: timeData
                 })
               }
             >
@@ -149,7 +151,8 @@ const HomeScreen = ({ navigation, route }) => {
               onPress={() =>
                 navigation.navigate('Humidity', {
                   name: 'Humidity',
-                  humidityData: humidityData
+                  humidityData: humidityData,
+                  timeData: timeData
                 })
               }
             >
@@ -167,7 +170,8 @@ const HomeScreen = ({ navigation, route }) => {
               onPress={() =>
                 navigation.navigate('Soil Moisture', {
                   name: 'Soil Moisture',
-                  soilMoistureData: soilMoistureData
+                  soilMoistureData: soilMoistureData,
+                  timeData: timeData
                 })
               }
             >
