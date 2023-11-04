@@ -4,7 +4,7 @@ import { LineChart } from 'react-native-chart-kit'
 import { Dimensions } from 'react-native'
 
 const SoilMoistureScreen = ({ navigation, route }) => {
-  const { soilMoistureData } = route.params
+  const { soilMoistureData, timeData } = route.params
   const reversedSoil = soilMoistureData.slice(0, 10).reverse() // Reversed copy of the data
 
   // Calculate the sum of all values in the reversedSoil array
@@ -16,13 +16,41 @@ const SoilMoistureScreen = ({ navigation, route }) => {
   console.log('SM data:', soilMoistureData)
   console.log('Average:', average)
 
+  function extractTimeFromTimestamp(timestamp) {
+    const parts = timestamp.split(' ')
+    if (parts.length >= 4) {
+      const timeParts = parts[3].split(':')
+      if (timeParts.length >= 2) {
+        return `${timeParts[0]}:${timeParts[1]}`
+      }
+    }
+    return 'Invalid Timestamp'
+  }
+
+  function extractDateFromTimestamp(timestamp) {
+    const parts = timestamp.split(' ')
+    if (parts.length >= 3) {
+      return `${parts[0]} ${parts[1]}`
+    }
+    return 'Invalid Timestamp' // Handle the case where the timestamp format is not as expected
+  }
   const data = {
-    labels: [],
+    labels: [
+      [extractTimeFromTimestamp(timeData[9])],
+      '',
+      '',
+      '',
+      '',
+      '',
+      '',
+      '',
+      [extractTimeFromTimestamp(timeData[0])]
+    ],
     datasets: [
       {
         data: reversedSoil,
-        color: (opacity = 1) => `rgba(0, 0, 255, ${opacity})`, // Line color for the first dataset
-        strokeWidth: 2 // Line width for the first dataset
+        color: (opacity = 1) => `rgba(0, 0, 255, ${opacity})`,
+        strokeWidth: 2
       }
     ]
   }
@@ -50,7 +78,6 @@ const SoilMoistureScreen = ({ navigation, route }) => {
           </Text>
         </View>
       </View>
-
       <LineChart
         data={data}
         width={Dimensions.get('window').width / 1.05}
@@ -61,11 +88,11 @@ const SoilMoistureScreen = ({ navigation, route }) => {
           backgroundGradientFrom: 'white',
           backgroundGradientTo: 'white',
           decimalPlaces: 1,
-          color: (opacity = 1) => `rgba(	51, 204, 204, ${opacity})`,
           labelColor: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
           style: {
             borderRadius: 16
-          }
+          },
+          color: (opacity = 1) => `rgba(0, 204, 204, ${opacity})`
         }}
         bezier
       />
