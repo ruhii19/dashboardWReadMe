@@ -4,38 +4,50 @@ import { LineChart } from 'react-native-chart-kit'
 import { Dimensions } from 'react-native'
 
 const RainScreen = ({ navigation, route }) => {
-  /* const { rainData } = route.params
-  const reversedRain = rainData.slice().reverse() // Reversed copy of the data
-  const data = {
-    labels: [],
-    datasets: [
-      {
-        data: reversedRain,
-        color: (opacity = 1) => `rgba(0, 0, 255, ${opacity})`, // Line color for the first dataset
-        strokeWidth: 2 // Line width for the first dataset
-      }
-    ]
-  } */
-
-  const { rainData } = route.params
+  const { rainData, timeData } = route.params
   const reversedRain = rainData.slice(0, 10).reverse() // Reversed copy of the data
 
-  // Calculate the sum of all values in the reversedSoil array
+  // Calculate the sum of all values in the reversedRain array
   const sum = reversedRain.reduce((acc, currentValue) => acc + currentValue, 0)
 
   // Calculate the average
   const average = sum / reversedRain.length
 
-  console.log('rain data:', rainData)
-  console.log('Average:', average)
+  function extractTimeFromTimestamp(timestamp) {
+    const parts = timestamp.split(' ')
+    if (parts.length >= 4) {
+      const timeParts = parts[3].split(':')
+      if (timeParts.length >= 2) {
+        return `${timeParts[0]}:${timeParts[1]}`
+      }
+    }
+    return 'Invalid Timestamp'
+  }
 
+  function extractDateFromTimestamp(timestamp) {
+    const parts = timestamp.split(' ')
+    if (parts.length >= 3) {
+      return `${parts[0]} ${parts[1]}`
+    }
+    return 'Invalid Timestamp' // Handle the case where the timestamp format is not as expected
+  }
   const data = {
-    labels: [],
+    labels: [
+      [extractTimeFromTimestamp(timeData[9])],
+      '',
+      '',
+      '',
+      '',
+      '',
+      '',
+      '',
+      [extractTimeFromTimestamp(timeData[0])]
+    ],
     datasets: [
       {
         data: reversedRain,
-        color: (opacity = 1) => `rgba(0, 0, 255, ${opacity})`, // Line color for the first dataset
-        strokeWidth: 2 // Line width for the first dataset
+        color: (opacity = 1) => `rgba(0, 0, 255, ${opacity})`,
+        strokeWidth: 2
       }
     ]
   }
@@ -48,7 +60,7 @@ const RainScreen = ({ navigation, route }) => {
           <Text style={styles.par}>Current</Text>
           <Text style={styles.curr}>
             {rainData[0]}
-            <Text style={styles.unit}>%</Text>
+            <Text style={styles.unit}>mm</Text>
           </Text>
         </View>
 
@@ -56,7 +68,7 @@ const RainScreen = ({ navigation, route }) => {
           <Text style={styles.par}>Average</Text>
           <Text style={styles.curr}>
             {average.toFixed(1)}
-            <Text style={styles.unit}>%</Text>
+            <Text style={styles.unit}>mm</Text>
           </Text>
         </View>
       </View>
@@ -66,12 +78,13 @@ const RainScreen = ({ navigation, route }) => {
         width={Dimensions.get('window').width / 1.05}
         height={Dimensions.get('window').height / 3}
         yAxisSuffix=" mm"
+        xAxisLabel="s"
         yAxisInterval={1}
         chartConfig={{
           backgroundGradientFrom: 'white',
           backgroundGradientTo: 'white',
           decimalPlaces: 1,
-          color: (opacity = 1) => `rgba(	51, 204, 204, ${opacity})`,
+          color: (opacity = 1) => `rgba(51, 204, 204, ${opacity})`,
           labelColor: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
           style: {
             borderRadius: 16
@@ -87,7 +100,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    //backgroundColor: '#f0f1f7',
     backgroundColor: 'white',
     flexDirection: 'column',
     justifyContent: 'flex-start'
@@ -95,10 +107,7 @@ const styles = StyleSheet.create({
   icon: {
     height: 640 / 3.5,
     width: 640 / 3.5,
-    //marginTop: 20
-
     marginBottom: Dimensions.get('window').height / 16
-    //padding: 50
   },
   textContainer: {
     flexDirection: 'row',
@@ -114,9 +123,7 @@ const styles = StyleSheet.create({
   },
   curr: {
     fontSize: Dimensions.get('window').height / 16,
-    //fontFamily: 'sans-serif-thin',
     fontFamily: 'sans-serif-light',
-    //fontWeight: '100',
     marginBottom: Dimensions.get('window').height / 9
   },
   unit: {
