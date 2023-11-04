@@ -108,7 +108,7 @@ const MultiUser = ({ navigation, route }) => {
         <View style={styles.container}>
           <ImageBackground
             style={styles.battery}
-            source={require('../../assets/battery/battery-full.png')}
+            source={require('../../../assets/battery/battery-full.png')}
           >
             <Text style={styles.batteryText}>{batteryData[0]}%</Text>
           </ImageBackground>
@@ -136,7 +136,8 @@ const MultiUser = ({ navigation, route }) => {
               onPress={() =>
                 navigation.navigate('Rain', {
                   name: 'Rain',
-                  rainData: rainData
+                  rainData: rainData,
+                  timeData: timeData
                 })
               }
             >
@@ -154,7 +155,8 @@ const MultiUser = ({ navigation, route }) => {
               onPress={() =>
                 navigation.navigate('Humidity', {
                   name: 'Humidity',
-                  humidityData: humidityData
+                  humidityData: humidityData,
+                  timeData: timeData
                 })
               }
             >
@@ -172,7 +174,8 @@ const MultiUser = ({ navigation, route }) => {
               onPress={() =>
                 navigation.navigate('Soil Moisture', {
                   name: 'Soil Moisture',
-                  soilMoistureData: soilMoistureData
+                  soilMoistureData: soilMoistureData,
+                  timeData: timeData
                 })
               }
             >
