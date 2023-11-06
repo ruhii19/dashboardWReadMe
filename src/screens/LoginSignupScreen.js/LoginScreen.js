@@ -68,7 +68,7 @@ const LoginScreen = ({ navigation }) => {
     <View style={styles.container}>
       <KeyboardAvoidingView
         style={styles.container}
-        behavior="padding" // Add this prop
+        //behavior="padding" // Add this prop
       >
         <StatusBar />
         <View
