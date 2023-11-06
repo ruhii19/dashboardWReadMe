@@ -5,27 +5,12 @@ import {
   TouchableOpacity,
   StyleSheet,
   StatusBar,
-  Alert
+  Alert,
+  KeyboardAvoidingView
 } from 'react-native'
 import React, { useState } from 'react'
 
 const LoginScreen = ({ navigation }) => {
-  /* const [text1, setText1] = useState('')
-  const [text2, setText2] = useState('')
-
-  const handleButtonPress = () => {
-    if (text1 === '' || text2 === '') {
-      // Both fields are empty, show an alert
-      Alert.alert('Email and Password are mandatory fields')
-    } else {
-      // Proceed with the button's functionality
-      // You can add your logic here
-      navigation.navigate('Home', {
-        email: text1,
-        password: text2
-      })
-    }
-  } */
   const [text1, setText1] = useState('')
   const [text2, setText2] = useState('')
 
@@ -81,45 +66,51 @@ const LoginScreen = ({ navigation }) => {
   }
   return (
     <View style={styles.container}>
-      <StatusBar />
-      <View
-        style={{
-          paddingVertical: 12,
-          width: '95%',
-          alignSelf: 'center',
-          marginBottom: 20
-        }}
+      <KeyboardAvoidingView
+        style={styles.container}
+        behavior="padding" // Add this prop
       >
-        <Text
+        <StatusBar />
+        <View
           style={{
+            paddingVertical: 12,
+            width: '95%',
             alignSelf: 'center',
-            fontSize: 25,
-            fontWeight: 'bold'
+            marginBottom: 20
           }}
         >
-          Login
-        </Text>
-      </View>
-      <TextInput
-        placeholder="Email"
-        keyboardType="email-address"
-        style={styles.input}
-        value={text1}
-        onChangeText={setText1}
-      />
-      <TextInput
-        placeholder="Password"
-        secureTextEntry={true}
-        style={styles.input}
-        value={text2}
-        onChangeText={setText2}
-      />
-      <TouchableOpacity
-        style={[styles.login, { width: '95%' }]}
-        onPress={handleButtonPress}
-      >
-        <Text style={styles.loginText}>Login</Text>
-      </TouchableOpacity>
+          <Text
+            style={{
+              alignSelf: 'center',
+              fontSize: 25,
+              fontWeight: 'bold'
+            }}
+          >
+            Login
+          </Text>
+        </View>
+        <TextInput
+          placeholder="Email"
+          keyboardType="email-address"
+          style={styles.input}
+          value={text1}
+          onChangeText={setText1}
+        />
+        <TextInput
+          placeholder="Password"
+          secureTextEntry={true}
+          style={styles.input}
+          value={text2}
+          onChangeText={setText2}
+          onSubmitEditing={handleButtonPress} // Add this prop
+        />
+        <TouchableOpacity
+          style={[styles.login, { width: '95%' }]}
+          onPress={handleButtonPress}
+        >
+          <Text style={styles.loginText}>Login</Text>
+        </TouchableOpacity>
+      </KeyboardAvoidingView>
     </View>
   )
 }
