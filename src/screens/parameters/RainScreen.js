@@ -78,7 +78,6 @@ const RainScreen = ({ navigation, route }) => {
         width={Dimensions.get('window').width / 1.05}
         height={Dimensions.get('window').height / 3}
         yAxisSuffix=" mm"
-        xAxisLabel="s"
         yAxisInterval={1}
         chartConfig={{
           backgroundGradientFrom: 'white',
